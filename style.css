@@ -1,0 +1,38 @@
+body {
+  background-color: #cacaca;
+}
+
+.baslik {
+  color: #e33b2e; /* HEX renk kodu #e33b2e */
+  font-weight: 600;
+  font-size: 48px;
+}
+
+#konum {
+  color: rgb(0, 51, 255);
+}
+
+#bilgi {
+  color: #ffc800;
+}
+
+.derece {
+  color: #ff0099 !important;
+}
+
+h4 {
+  color: green;
+}
+
+span {
+  background-color: #b6b6b6;
+}
+
+img {
+  border-radius: 100px;
+}
+
+.resim3 {
+  height: 200px;
+  width: 200px;
+}

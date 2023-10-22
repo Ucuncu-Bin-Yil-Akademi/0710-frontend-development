@@ -1,0 +1,20 @@
+body {
+  background-color: red;
+}
+
+.image1 {
+  height: 250px;
+  width: 250px;
+  border-radius: 125px;
+}
+
+#text1 {
+  background-color: #000000;
+  color: #fff;
+}
+
+.image2 {
+  height: 250px;
+  width: 500px;
+  border-radius: 125px;
+}
