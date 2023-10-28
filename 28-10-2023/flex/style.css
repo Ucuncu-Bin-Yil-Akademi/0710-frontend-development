@@ -1,0 +1,13 @@
+body{
+    background-color: rgb(236, 236, 236);
+}
+
+.container{
+    background-color: rgb(62, 62, 62);
+    color: white;
+    display: flex;
+    flex-direction: row; /* flex-direction: flex elemanlarının yerleşimi alt alta veya üst üste olacak şekilde ayarlanabilir */
+    align-items: center;
+    justify-content: space-between;
+    gap: 100px;
+}
