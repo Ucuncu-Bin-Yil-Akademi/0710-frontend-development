@@ -1,0 +1,161 @@
+body{
+    background-color: #1e1e1e;
+}
+
+/* Projedeki bütün HTML elemanlarına etki eder. */
+*{
+    color: white;
+}
+
+
+/* Projedeki bir HTML etiketinin özelliğini değiştirir (hepsinin) */
+h1{
+   background-color: red !important;
+}
+
+/* ID attribute'u hello olan elemanları günceller */
+#hello{
+    background-color: green;
+}
+
+/* wrapper class'ına sahip elemanın içindeki h2 etiketlerini etkiler */
+.wrapper > h2{
+    color: blue
+}
+
+/* wrapper class'ına sahip elemanın içinde id'si uby olan elemanları günceller */
+.wrapper > #uby{
+    background-color: rgb(166, 0, 255);
+}
+
+/* href attribute'a sahip olan a etiketlerini etkiler */
+a[href]{
+    background-color: rgb(255, 140, 0);
+}
+
+/* href attribute'u https://www.facebook.com olan a etiketlerini etkiler */
+a[href="https://www.facebook.com"]{
+ background-color: #ff0040;   
+}
+
+/* yukarıdaki ile aynı işlevi görür */
+input[type="text"]{
+   border: 5px solid red;
+}
+
+/* input etiketlerinin placeholder özelliklerini etkiler */
+input::placeholder{
+    color: red
+}
+
+button{
+    background-color: rgb(153, 255, 0);
+    border: none;
+    /*     
+    padding-left: 30px;
+    padding-right: 30px;
+    padding-top: 15px;
+    padding-bottom: 15px; 
+    */
+    
+    /* 
+    padding: 15px 30px 15px 30px;
+    */
+
+    padding: 15px 30px;
+    margin-left: 50px;
+    margin-top: 100px;
+    /* padding'te yapmış olduğumuz kısayollar margin için de geçerlidir */
+    border-radius: 5px;
+    color: rgb(17, 17, 17);
+}
+
+/* 
+Herhangi bir HTML elemanının üzerine geldiğimizdeki property'sini değiştirir.
+Tanımlanan property'ler dışındakiler ana elemanın property'lerini kullanır. (inhertitance)
+*/
+
+
+button:hover{
+    padding: 17px 32px;
+    color: rgb(31, 31, 31)
+}
+
+
+
+input[type="text"]:focus{
+    background-color: rgb(31, 31, 31);
+ }
+ 
+
+.wrapper > h2:last-child{
+    background-color: red;
+}
+
+ul > li:first-child{
+    background-color: #88ff00;
+}
+
+ol > li:nth-child(2){
+    background-color: #ff0040;
+}
+
+.p-wrapper > p:nth-child(odd){
+    background-color: #2d1f1f;
+}
+
+.p-wrapper > p:nth-child(even){
+    background-color: #9b4040;
+}
+
+table{
+    border-spacing: 0px;
+}
+
+tbody > tr:nth-child(odd){
+   background-color: rgb(182, 182, 182);
+}
+
+.lorem-text::first-letter{
+    font-size:24px;
+    color: #88ff00;
+}
+
+.lorem-text::first-line{
+   background-color: #565656;
+   padding: 34px;
+}
+
+#lorem-2{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+#lorem-2::before{
+    content: "";
+    width: 400px;
+    height: 1px;
+    background-color: rgb(55, 55, 55);
+}
+
+#lorem-2::after{
+    content: "";
+    width: 400px;
+    height: 1px;
+    background-color: rgb(55, 55, 55);
+}
+
+#lorem-3{
+    position: relative;
+}
+
+#lorem-3::before{
+    content: "Lorem Text";
+    position: absolute;
+    left: -3px;
+    top: -3px;
+    opacity: 0.5;
+    filter: blur(2px);
+    color: red;
+}
