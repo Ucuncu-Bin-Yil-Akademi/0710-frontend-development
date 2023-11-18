@@ -1,0 +1,47 @@
+body {
+  background-color: #252525;
+  padding: 0;
+  margin: 0;
+}
+
+header {
+  background-color: #ececec;
+  padding: 20px;
+  text-align: center;
+}
+
+main {
+  padding: 20px;
+}
+
+footer {
+  background-color: rgb(21, 44, 97);
+  padding: 20px;
+  text-align: center;
+}
+
+/* Media Query */
+
+@media screen and (max-width: 600px) {
+  main {
+    background-color: #ffd133;
+  }
+}
+
+@media screen and (min-width: 601px) and (max-width: 1024px) {
+  main {
+    background-color: aqua;
+  }
+}
+
+@media screen and (min-width: 1025px) and (max-width: 1200px) {
+  main {
+    background-color: red;
+  }
+}
+
+@media screen and (min-width: 1201px) {
+  main {
+    background-color: #a74d4d;
+  }
+}
