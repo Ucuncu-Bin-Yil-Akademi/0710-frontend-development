@@ -30,12 +30,12 @@ row: satır
     margin-top:50px;
     background-color: #1f9c9c;
     display: inline-grid;
-    grid-template-rows: 50px 195px 200px 250px;  /* bu komut sayesinde satırların yükseliği ayarlanabilir. İlk satırımın 190px, ikincinin 195px ve üçüncünün 200px yükseliği olur. */
-    grid-template-columns: 300px 100px 200px;  /* bu komut sayesinde sütunların genişliği ayarlanabilir. Üçüncü bir değer tanımlanırsa grid 3 sütunlu olur. */
-    /* grid-row-gap sayesinde satırların arasındaki mesafe ve grid-column-gap sayesinde sütunlar arasındaki mesafe ayarlanabilir.
+    /* grid-row-gap sayesinde satırların arasındaki mesafe ve grid-column-gap sayesinde sütunlar arasındaki mesafe ayarlanabilir. */
     grid-row-gap: 10px;
     grid-column-gap: 10px;
-    */
+    padding: 10px;
+    grid-template-rows: 50px 195px 200px 250px;  /* bu komut sayesinde satırların yükseliği ayarlanabilir. İlk satırımın 190px, ikincinin 195px ve üçüncünün 200px yükseliği olur. */
+    grid-template-columns: 300px 100px 200px;  /* bu komut sayesinde sütunların genişliği ayarlanabilir. Üçüncü bir değer tanımlanırsa grid 3 sütunlu olur. */
 }
 
 .item{
