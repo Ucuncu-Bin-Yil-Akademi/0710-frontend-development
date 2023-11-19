@@ -1,0 +1,59 @@
+body{
+    background-color: #252525;
+}
+
+*{
+    color: rgb(243, 243, 243);
+    font-size: 24px;
+    font-weight: 900;
+}
+
+/* 
+
+## grid ve inline-grid arasındaki fark, grid sayfanın tamamını kaplarken (width: 100%) inline-grid ise içindeki en geniş elemanın genişliğini alır. (width: auto) ##
+
+.grid-container{
+    background-color: #5765f8;
+    padding: 10px;
+    display: grid;
+} 
+
+*/
+
+/* 
+column: sütun
+row: satır
+*/
+
+.inline-grid-container{
+    margin-left: 100px;
+    margin-top:50px;
+    background-color: #1f9c9c;
+    display: inline-grid;
+    grid-template-rows: 50px 195px 200px 250px;  /* bu komut sayesinde satırların yükseliği ayarlanabilir. İlk satırımın 190px, ikincinin 195px ve üçüncünün 200px yükseliği olur. */
+    grid-template-columns: 300px 100px 200px;  /* bu komut sayesinde sütunların genişliği ayarlanabilir. Üçüncü bir değer tanımlanırsa grid 3 sütunlu olur. */
+    /* grid-row-gap sayesinde satırların arasındaki mesafe ve grid-column-gap sayesinde sütunlar arasındaki mesafe ayarlanabilir.
+    grid-row-gap: 10px;
+    grid-column-gap: 10px;
+    */
+}
+
+.item{
+    background-color: gray;
+    border: 3px solid rgb(255, 255, 255);
+    padding: 20px;
+}
+
+.item-5{
+    background-color: rgb(96, 96, 96);
+     /* 
+     Bir elemanın spesifik konumunu ayarlamak için column-start
+     column-end, row-start ve row-end kullanılabilir. satır ve
+     sütunun çizgi numaralarına göre sütun başlangıç/bitişi veya
+     satır başlangıç/bitişi belirlenebilir.
+     */
+    grid-column-start:2;
+    grid-column-end: 4;
+    grid-row-start: 3;
+    grid-row-end: 4;
+}
