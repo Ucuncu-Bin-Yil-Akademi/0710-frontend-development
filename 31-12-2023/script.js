@@ -88,7 +88,6 @@ console.log(newArr);
 const _newArr = [3, 11, 23, 6, 44, 22];
 
 _newArr.sort(function (a, b) {
-  debugger;
   // a ve b olarak tanımlanan parametreler array'deki iterasyona sokulan ikişerli elemanlardır
   return a - b; // eğer bu hesaplama negatif çıkarsa yerleri değiştirilmez, pozitif çıkarsa değiştirilir
   // örneğin ilk iterasyonda a=3 ve b=11 olacaktır ve  3-11 değeri negatif (-8) döneceği için yerleri değişmeyecektir
