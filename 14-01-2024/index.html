@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script src="./script.js" defer></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- 
+        defer attribute'u eklenmez ise ilk önce JS kodu derlenir ve DOM yapısı sonrasında derlenir. Böylece JS tarafında istediğimiz
+    DOM elemanını elde etmekte sorun yaşarız (null/undefined olarak dönecektir)
+    -->
+  </head>
+  <body>
+    <div>
+      <h1>Merhaba, Canberk</h1>
+      <ul id="alisveris-listesi">
+        <h2>Alışveriş Listesi</h2>
+        <li>Süt</li>
+        <li>Peynir</li>
+        <li id="alinacak-urun">
+          <a
+            class="text-xl text-gray-400 bg-red-600 px-2 rounded"
+            href="#yumurta-linki"
+            >Yumurta</a
+          >
+        </li>
+        <li>Zeytinyağı</li>
+        <li>Bulaşık deterjanı</li>
+      </ul>
+    </div>
+  </body>
+</html>

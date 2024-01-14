@@ -12,10 +12,14 @@ const wrapperElm = document.getElementById("selam-ver");
 console.log(wrapperElm);
 
 // document.getElementsByClassName() ## class'a göre elemanları getirir, bir Array içerisinde döner
+// Elde edilen DOM elemanları bir Array'de dönüyor olsa dahi Array metodları bu elemanlar üzerinde kullanılamaz.
+// Çünkü geriye dönen Array'in tipi bir HTMLCollection olup standart Javascript Array'i değildir.
 const ubyElms = document.getElementsByClassName("uby");
 console.log(ubyElms[0]);
 
 // document.getElementsByName()  ## name'e göre elemanları getirir, bir Array içerisinde döner
+// Elde edilen DOM elemanları bir Array'de dönüyor olsa dahi Array metodları bu elemanlar üzerinde kullanılamaz.
+// Çünkü geriye dönen Array'in tipi bir HTMLCollection olup standart Javascript Array'i değildir.
 
 const inputElms = document.getElementsByName("username");
 console.log(inputElms);
@@ -45,7 +49,8 @@ console.log(degisecekElm);
 degisecekElm.innerText = "Yeni metin";
 
 const selectedElements = document.getElementsByClassName("eleman");
-// getElementsByClassName geriye bir HTMLCollection döner. Bu standart Array yapısından farklıdır. HTMLCollection içerisinde Array metodları uygulanamaz (foreach vb.)
+// getElementsByClassName geriye bir HTMLCollection döner. Bu standart Array yapısından farklıdır.
+// HTMLCollection içerisinde Array metodları uygulanamaz (foreach vb.)
 
 const selectedElementsQ = document.querySelectorAll(".eleman");
 // querySelectorAll metodu ise bir NodeList döner. Burada Array metodları kullanılabilir.
@@ -53,6 +58,7 @@ const selectedElementsQ = document.querySelectorAll(".eleman");
 console.log(selectedElementsQ);
 
 selectedElementsQ.forEach((item) => {
+  console.log(item);
   item.innerHTML = "<i>Yeni Değer</i>";
 });
 
