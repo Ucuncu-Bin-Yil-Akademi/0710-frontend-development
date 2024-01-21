@@ -1,0 +1,43 @@
+<!-- Register - GIRIŞ YAPMA SAYFASI -->
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="./styles/register.css" />
+    <script src="https://cdn.tailwindcss.com" defer></script>
+    <script src="./scripts/register.js" defer></script>
+  </head>
+  <body>
+    <div class="registerWrapper">
+      <div>
+        <img src="./public/logo.png" />
+      </div>
+      <div class="registerContainer">
+        <div class="flex flex-col justify-center items-center">
+          <h2>Welcome to our App.</h2>
+          <h4>Create a new account</h4>
+        </div>
+       <div class="flex gap-5">
+        <input type="text" placeholder="Name" id="firstname" class="w-full" />
+        <input type="text" placeholder="Surname" id="lastname" class="w-full" />
+       </div>
+        <input type="text" placeholder="Username" id="username" />
+        <input type="email" placeholder="Mail" id="mail" />
+        <textarea placeholder="Biography" id="bio"></textarea>
+        <input type="password" placeholder="Password" id="password" />
+        <input type="password" placeholder="Re-type password" id="repassword" />
+        <button id="register">Register</button>
+      </div>
+
+      <div>
+        <span>
+          Already have an account? Go to
+          <a href="/" style="text-decoration: underline">Login</a> page
+        </span>
+      </div>
+    </div>
+  </body>
+</html>
