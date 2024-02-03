@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="./script.js" defer></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  </head>
+  <body>
+    <div class="m-5">
+     <!-- START: Header -->
+      <div class="flex items-center justify-between mb-5">
+        <h1 class="text-gray-500">Kullanıcı Listesi (25)</h1>
+       <div>
+        <button class="bg-red-500 text-white p-2 rounded mr-5">
+            <i class="fa-solid fa-trash mr-2"></i>
+            Kullanıcıyı Sil</button>
+
+        <button class="bg-green-500 text-white p-2 rounded">
+            <i class="fa-solid fa-plus mr-2"></i>
+            Yeni Kullanıcı Ekle</button>
+       </div>
+      </div>
+     <!-- END: Header -->
+
+
+      <!-- START: Yeni Kullanıcı Ekleme Formu -->
+      <div class="w-full flex justify-center items-center">
+        <div class="border border-gray-300 p-3 rounded-lg bg-gray-100 w-1/2">
+            <h2 class="text-xl mb-5 text-gray-600">Yeni Kullanıcı Ekle</h2>
+             <form>
+                <div class="flex gap-3">
+                    <input type="text" placeholder="Ad" class="border border-gray-500 rounded-full p-2 w-1/2" />
+                    <input type="text" placeholder="Soyad" class="border border-gray-500 rounded-full p-2 w-1/2" />
+                </div>
+                <div class="flex gap-3 mt-5">
+                    <input type="text" placeholder="Kullanıcı Adı" class="border border-gray-500 rounded-full p-2 w-1/2" />
+                <input type="date" placeholder="Doğum Tarihi" class="border border-gray-500 rounded-full p-2 w-1/2" />
+                </div>
+                <div class="mt-5">
+                    <input type="text" placeholder="Avatar" class="border border-gray-500 rounded-full p-2 w-1/2" />
+                </div>
+                <button class="bg-green-500 text-white px-2 py-3 rounded mt-5 w-full ">Kullanıcıyı Oluştur</button>
+             </form>
+          </div>
+      </div>
+      <!-- END: Yeni Kullanıcı Ekleme Formu -->
+
+
+    <!-- START: Kullanıcı Listesi -->
+      <div id="userListWrapper" class="grid grid-cols-5 gap-3">
+
+        <div
+          class="flex flex-col items-center gap-5 border border-2 border-gray-300 p-3 rounded bg-gray-100"
+        >
+        <div class="flex gap-3 w-full">
+            <img
+            src="https://loremflickr.com/640/480/people"
+            class="h-[75px] w-[75px] rounded-full"
+          />
+          <div class="flex flex-col">
+            <span class="text-gray-500">@john_doe</span>
+            <span class="text-gray-600">John Doe</span>
+            <span class="text-gray-500">01.01.2024</span>
+          </div>
+        </div>
+
+        <div class="w-full flex justify-between">
+            <button class="bg-orange-500 text-white px-2 py-1 rounded text-sm"> Kullanıcıyı Seç </button>
+            <button class="bg-gray-500 text-white px-2 py-1 rounded text-sm"> Kullanıcıyı Güncelle </button>
+        </div>
+        </div>
+
+         
+
+
+      </div>
+    <!-- END: Kullanıcı Listesi -->
+
+  </body>
+</html>
