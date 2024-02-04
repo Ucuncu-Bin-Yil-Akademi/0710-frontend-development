@@ -6,6 +6,8 @@
     <title>Document</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="https://momentjs.com/downloads/moment.min.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="./script.js" defer></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
   </head>
@@ -13,9 +15,9 @@
     <div class="m-5">
      <!-- START: Header -->
       <div class="flex items-center justify-between mb-5">
-        <h1 class="text-gray-500">Kullanıcı Listesi (25)</h1>
+        <h1 class="text-gray-500 text-xl" id="userCount"></h1>
        <div>
-        <button class="bg-red-500 text-white p-2 rounded mr-5">
+        <button class="bg-red-500 text-white p-2 rounded mr-5" id="deleteUserBtn">
             <i class="fa-solid fa-trash mr-2"></i>
             Kullanıcıyı Sil</button>
 
@@ -28,9 +30,12 @@
 
 
       <!-- START: Yeni Kullanıcı Ekleme Formu -->
-      <div class="w-full flex justify-center items-center">
-        <div class="border border-gray-300 p-3 rounded-lg bg-gray-100 w-1/2">
-            <h2 class="text-xl mb-5 text-gray-600">Yeni Kullanıcı Ekle</h2>
+      <div class="w-full flex justify-center items-center absolute w-screen h-screen top-0 left-0 hidden" style="background-color: rgba(39, 39, 39, 0.65);">
+        <div class="border border-gray-300 p-3 rounded-lg bg-gray-100 w-1/2 shadow-lg">
+            <div class="w-full flex items-center justify-between mb-5 border-b-2 border-gray-400 pb-4">
+              <h2 class="text-xl text-gray-600">Yeni Kullanıcı Ekle</h2>
+              <i class="fa-solid fa-circle-xmark fa-2x"></i>
+            </div>
              <form>
                 <div class="flex gap-3">
                     <input type="text" placeholder="Ad" class="border border-gray-500 rounded-full p-2 w-1/2" />
@@ -52,30 +57,6 @@
 
     <!-- START: Kullanıcı Listesi -->
       <div id="userListWrapper" class="grid grid-cols-5 gap-3">
-
-        <div
-          class="flex flex-col items-center gap-5 border border-2 border-gray-300 p-3 rounded bg-gray-100"
-        >
-        <div class="flex gap-3 w-full">
-            <img
-            src="https://loremflickr.com/640/480/people"
-            class="h-[75px] w-[75px] rounded-full"
-          />
-          <div class="flex flex-col">
-            <span class="text-gray-500">@john_doe</span>
-            <span class="text-gray-600">John Doe</span>
-            <span class="text-gray-500">01.01.2024</span>
-          </div>
-        </div>
-
-        <div class="w-full flex justify-between">
-            <button class="bg-orange-500 text-white px-2 py-1 rounded text-sm"> Kullanıcıyı Seç </button>
-            <button class="bg-gray-500 text-white px-2 py-1 rounded text-sm"> Kullanıcıyı Güncelle </button>
-        </div>
-        </div>
-
-         
-
 
       </div>
     <!-- END: Kullanıcı Listesi -->
