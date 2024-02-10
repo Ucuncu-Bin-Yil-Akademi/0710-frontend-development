@@ -11,6 +11,9 @@ async function getAllUsers() {
     );
 
     users = response.data;
+    // [1,2,3,4,5,6,a,b,c,7,8]
+    // reverse: [8,7,c,b,a,6,5,4,3,2,1]
+    users = users.reverse();
     renderUsers();
   } catch (err) {
     Swal.fire({
@@ -81,6 +84,32 @@ function renderUsers() {
     updateUserBtn.className =
       "bg-gray-500 text-white px-2 py-1 rounded text-sm";
     updateUserBtn.innerText = "Kullanıcıyı Güncelle";
+    updateUserBtn.addEventListener("click", () => {
+      const modalEl = document.getElementById("userModal");
+      modalEl.classList.remove("hidden");
+
+      selectedUser = {
+        id: user.id,
+        username: user.username,
+      };
+
+      const actionBtnEl = document.getElementById("modalActionBtn");
+      actionBtnEl.innerText = "Kullanıcıyı Güncelle";
+      actionBtnEl.setAttribute("data-button-type", "update");
+      document.getElementById("modalTitle").innerText = "Kullanıcı Güncelle";
+
+      const nameAttrs = [
+        "firstname",
+        "lastname",
+        "username",
+        "birthday",
+        "avatar",
+      ];
+      nameAttrs.forEach((attribute) => {
+        const el = document.getElementsByName(attribute)[0];
+        el.value = user[attribute];
+      });
+    });
 
     cardFooterEl.appendChild(selectUserBtn);
     cardFooterEl.appendChild(updateUserBtn);
@@ -95,11 +124,19 @@ function renderUsers() {
 function renderSelectedUser() {
   const userCards = Array.from(document.querySelectorAll(".user-card"));
 
-  const selectedUserEl = userCards.filter((card) => {
+  const selectedUserEl = userCards.find((card) => {
     return card.attributes["data-user-id"].value == selectedUser.id;
   });
 
-  selectedUserEl[0].classList.add("border-orange-500");
+  if (selectedUserEl.classList.contains("border-orange-500")) {
+    selectedUserEl.classList.remove("border-orange-500");
+    selectedUser = {
+      id: null,
+      username: "",
+    };
+  } else {
+    selectedUserEl.classList.add("border-orange-500");
+  }
 
   userCards
     .filter((card) => {
@@ -110,49 +147,193 @@ function renderSelectedUser() {
     });
 }
 
-document.getElementById("deleteUserBtn").addEventListener("click", () => {
-  if (!selectedUser.id) {
-    Swal.fire({
-      title: "Hata",
-      text: "Lütfen bir kullanıcı seçiniz",
-      icon: "error",
-      confirmButtonText: "Tamam",
+async function handleCreateUser() {
+  const reqBody = {
+    firstname: document.getElementsByName("firstname")[0].value,
+    lastname: document.getElementsByName("lastname")[0].value,
+    username: document.getElementsByName("username")[0].value,
+    birthday: document.getElementsByName("birthday")[0].value,
+    avatar: document.getElementsByName("avatar")[0].value,
+  };
+
+  await axios
+    .post("https://65bdedffdcfcce42a6f19a02.mockapi.io/get-users", reqBody)
+    .then(() => {
+      const modalEl = document.getElementById("userModal");
+      modalEl.classList.add("hidden");
+
+      Swal.fire({
+        title: "Başarılı",
+        text: "Kullanıcı başarıyla eklendi",
+        icon: "success",
+        confirmButtonText: "Tamam",
+      });
+
+      users = [];
+      const userListEl = document.getElementById("userListWrapper");
+      userListEl.innerHTML = "";
+      getAllUsers();
+    })
+    .catch((err) => {
+      Swal.fire({
+        title: "Hata",
+        text: "Kullanıcı eklenirken hata oluştu",
+        icon: "error",
+        confirmButtonText: "Tamam",
+      });
     });
-  } else {
-    Swal.fire({
-      title: "Kullanıcıyı Sil",
-      html: `<b>@${selectedUser.username}</b> kullanıcı adlı kullanıcıyı silmek istediğinize emin misiniz?`,
-      icon: "error",
-      confirmButtonText: "Evet",
-      cancelButtonText: "Hayır",
-      showCancelButton: true,
-    }).then(async (result) => {
-      if (result.isConfirmed) {
-        await axios
-          .delete(
-            `https://65bdedffdcfcce42a6f19a02.mockapi.io/get-users/${selectedUser.id}`
-          )
-          .then(() => {
-            Swal.fire({
-              title: "Başarılı",
-              text: "Kullanıcı başarıyla silindi",
-              icon: "success",
-              confirmButtonText: "Tamam",
-            });
-            users = [];
-            const userListEl = document.getElementById("userListWrapper");
-            userListEl.innerHTML = "";
-            getAllUsers();
-          })
-          .catch((err) => {
-            Swal.fire({
-              title: "Hata",
-              text: "Kullanıcı silinirken hata oluştu",
-              icon: "error",
-              confirmButtonText: "Tamam",
-            });
-          });
-      }
+}
+
+async function handleUpdateUser() {
+  const reqBody = {
+    firstname: document.getElementsByName("firstname")[0].value,
+    lastname: document.getElementsByName("lastname")[0].value,
+    username: document.getElementsByName("username")[0].value,
+    birthday: document.getElementsByName("birthday")[0].value,
+    avatar: document.getElementsByName("avatar")[0].value,
+  };
+
+  await axios
+    .put(
+      "https://65bdedffdcfcce42a6f19a02.mockapi.io/get-users/" +
+        selectedUser.id,
+      reqBody
+    )
+    .then(() => {
+      const modalEl = document.getElementById("userModal");
+      modalEl.classList.add("hidden");
+      selectedUser = {
+        id: null,
+        username: "",
+      };
+
+      users = [];
+      const userListEl = document.getElementById("userListWrapper");
+      userListEl.innerHTML = "";
+      getAllUsers();
+
+      Swal.fire({
+        title: "Başarılı",
+        text: "Kullanıcı başarıyla güncellendi",
+        icon: "success",
+        confirmButtonText: "Tamam",
+      });
+    })
+    .catch((err) => {
+      Swal.fire({
+        title: "Hata",
+        text: "Kullanıcı güncellenirken hata oluştu",
+        icon: "error",
+        confirmButtonText: "Tamam",
+      });
     });
+}
+
+// document.getElementById("deleteUserBtn").addEventListener("click", () => {});
+
+$("#deleteUserBtn").click(() => {
+  {
+    if (!selectedUser.id) {
+      Swal.fire({
+        title: "Hata",
+        text: "Lütfen bir kullanıcı seçiniz",
+        icon: "error",
+        confirmButtonText: "Tamam",
+      });
+    } else {
+      Swal.fire({
+        title: "Kullanıcıyı Sil",
+        html: `<b>@${selectedUser.username}</b> kullanıcı adlı kullanıcıyı silmek istediğinize emin misiniz?`,
+        icon: "error",
+        confirmButtonText: "Evet",
+        cancelButtonText: "Hayır",
+        showCancelButton: true,
+      }).then(async (result) => {
+        if (result.isConfirmed) {
+          await axios
+            .delete(
+              `https://65bdedffdcfcce42a6f19a02.mockapi.io/get-users/${selectedUser.id}`
+            )
+            .then(() => {
+              Swal.fire({
+                title: "Başarılı",
+                text: "Kullanıcı başarıyla silindi",
+                icon: "success",
+                confirmButtonText: "Tamam",
+              });
+              users = [];
+              const userListEl = document.getElementById("userListWrapper");
+              userListEl.innerHTML = "";
+              getAllUsers();
+            })
+            .catch((err) => {
+              Swal.fire({
+                title: "Hata",
+                text: "Kullanıcı silinirken hata oluştu",
+                icon: "error",
+                confirmButtonText: "Tamam",
+              });
+            });
+        }
+      });
+    }
   }
 });
+
+document.getElementById("createUserModalBtn").addEventListener("click", () => {
+  const modalEl = document.getElementById("userModal");
+  modalEl.classList.remove("hidden");
+
+  $("#modalActionBtn")
+    .text("Kullanıcıyı Ekle")
+    .attr("data-button-type", "create");
+
+  /*   
+  const actionBtnEl = document.getElementById("modalActionBtn");
+  actionBtnEl.innerText = "Kullanıcıyı Ekle";
+  actionBtnEl.setAttribute("data-button-type", "create"); 
+  */
+
+  document.getElementById("modalTitle").innerText = "Kullanıcı Ekle";
+});
+
+document.getElementById("closeModalBtn").addEventListener("click", () => {
+  const modalEl = document.getElementById("userModal");
+  modalEl.classList.add("hidden");
+  document.getElementById("modalActionBtn").innerText = "";
+  document.getElementById("modalTitle").innerText = "";
+});
+
+document
+  .getElementById("modalActionBtn")
+  .addEventListener("click", async () => {
+    const nameAttrs = [
+      "firstname",
+      "lastname",
+      "username",
+      "birthday",
+      "avatar",
+    ];
+    let isFormValid = true;
+
+    nameAttrs.forEach((attribute) => {
+      const el = document.getElementsByName(attribute)[0];
+      if (el.value === "") {
+        isFormValid = false;
+        Swal.fire({
+          title: "Hata",
+          text: "Lütfen tüm alanları doldurunuz",
+          icon: "error",
+        });
+      }
+    });
+
+    if (isFormValid) {
+      const actionBtnEl = document.getElementById("modalActionBtn");
+      if (actionBtnEl.getAttribute("data-button-type") === "create") {
+        handleCreateUser();
+      } else if (actionBtnEl.getAttribute("data-button-type") === "update") {
+        handleUpdateUser();
+      }
+    }
+  });
