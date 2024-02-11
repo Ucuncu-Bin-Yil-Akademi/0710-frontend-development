@@ -1,3 +1,6 @@
+import { formatDate } from "./utils/dateFormatter.js";
+import defaultFonksiyon from "./utils/dateFormatter.js";
+
 let users = [];
 let selectedUser = {
   id: null,
@@ -26,6 +29,7 @@ async function getAllUsers() {
 }
 
 getAllUsers();
+defaultFonksiyon();
 
 function renderUsers() {
   const userListEl = document.getElementById("userListWrapper");
@@ -59,8 +63,7 @@ function renderUsers() {
 
     const birthDateSpanEl = document.createElement("span");
     birthDateSpanEl.className = "text-gray-500";
-    birthDateSpanEl.innerText = moment(user.birtday).format("DD/MM/YYYY");
-
+    birthDateSpanEl.innerText = formatDate(user.birtday);
     userInfoEl.appendChild(userNameSpanEl);
     userInfoEl.appendChild(fullNameSpanEl);
     userInfoEl.appendChild(birthDateSpanEl);
