@@ -1,5 +1,14 @@
-import { formatDate } from "./utils/dateFormatter.js";
-import defaultFonksiyon from "./utils/dateFormatter.js";
+/*
+import { formatDate, showMonth } from "./utils/dateFormatter.js";
+*/
+
+import { formatDate, showMonth } from "./utils/index.js";
+import formatDateByHour from "./utils/dateFormatter.js";
+
+/* function showHour() {
+  const button = document.getElementById("showHour");
+  // ..
+} */
 
 let users = [];
 let selectedUser = {
@@ -29,7 +38,6 @@ async function getAllUsers() {
 }
 
 getAllUsers();
-defaultFonksiyon();
 
 function renderUsers() {
   const userListEl = document.getElementById("userListWrapper");
