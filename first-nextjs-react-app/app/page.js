@@ -5,7 +5,10 @@ export default function Home() {
   // React'te standart Javascript ile oluşturduğumuz değişkenleri değeri takip edilmez.
   // Bu nedenle useState fonksiyonu ile değişkenlerin değerlerini takip edebiliriz.
 
-  const [firstName, setFirstName] = useState("John"); //let firstName = "John";
+  const [firstName, setFirstName] = useState("John");
+  //let firstName = "John";
+  // firstName = "Jane";      -->    setFirstName("Jane");
+
   const [inputValue, setInputValue] = useState("");
 
   const buttonClickHandler = () => {
