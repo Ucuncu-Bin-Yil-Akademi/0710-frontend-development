@@ -1,5 +1,9 @@
 "use client"; // Client Component şeklinde bir hata alırsanız bu satırı ekleyin.
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import UserCard from "./users/components/userCard";
+import axios from "axios";
+import Button from "@mui/material/Button";
+import MuiCard from "./components/muiCard";
 
 export default function Home() {
   // React'te standart Javascript ile oluşturduğumuz değişkenleri değeri takip edilmez.
@@ -10,11 +14,20 @@ export default function Home() {
   // firstName = "Jane";      -->    setFirstName("Jane");
 
   const [inputValue, setInputValue] = useState("");
+  const [userData, setUserData] = useState([]);
 
   const buttonClickHandler = () => {
     alert("Button clicked!");
     setFirstName("Jane"); // firstName = "Jane";
   };
+
+  useEffect(() => {
+    axios
+      .get("https://65bdedffdcfcce42a6f19a02.mockapi.io/get-users")
+      .then((response) => {
+        setUserData(response.data);
+      });
+  }, []);
 
   return (
     <>
@@ -67,12 +80,26 @@ export default function Home() {
         Display Value
       </button>
 
+      <Button className="m-4 bg-violet-600" variant="contained">
+        Hello world
+      </Button>
+
       <b>Girilen Değer: {inputValue}</b>
       <input
         type="text"
         className="border-2 border-gray-400 p-2"
         onChange={(event) => setInputValue(event.target.value)}
       />
+      <div className="w-full p-2 my-4 bg-gray-300">
+        <MuiCard />
+      </div>
+      <div className="w-full p-2 bg-gray-300">
+        <div className="grid grid-cols-1 md:grid-cols-5 gap-3">
+          {userData.map((user) => (
+            <UserCard currentUser={user} />
+          ))}
+        </div>
+      </div>
     </>
   );
 }

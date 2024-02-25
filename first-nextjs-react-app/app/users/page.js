@@ -1,10 +1,13 @@
 "use client"; // Client Side Rendering işlemi yap. (Server Side Rendering yapmaz.)
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { CounterData } from "@/app/context/counterContext";
+import { useEffect, useState, useContext } from "react";
 import UserCard from "./components/userCard";
+import SpanComponent from "../jsx-syntax/components/spanComponent";
 
 export default function UsersPage() {
   const [userData, setUserData] = useState([]);
+  const { counter, setCounter } = useContext(CounterData);
 
   useEffect(() => {
     axios
@@ -17,7 +20,7 @@ export default function UsersPage() {
   return (
     <div className="mx-10">
       <h1 className="text-gray-500 text-xl my-10">
-        Kullanıcı Listesi ({userData.length})
+        Kullanıcı Listesi ({userData.length}) - Counter: {counter}
       </h1>
 
       {userData.length === 0 ? <h1>Kullanıcı bulunamadı!</h1> : <></>}
@@ -28,6 +31,8 @@ export default function UsersPage() {
           <UserCard currentUser={user} />
         ))}
       </div>
+
+      <SpanComponent spanText="Hello world!" users={userData} />
     </div>
   );
 }
