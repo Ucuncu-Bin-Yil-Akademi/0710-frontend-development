@@ -6,7 +6,6 @@ export default function JsxSyntax() {
     <>
       <h2>JSX Syntax</h2>
       <SpanComponent spanText="Hello world!" />
-
       <H1Component h1Text="Lorem ipsum" anotherProp="test" />
     </>
   );
