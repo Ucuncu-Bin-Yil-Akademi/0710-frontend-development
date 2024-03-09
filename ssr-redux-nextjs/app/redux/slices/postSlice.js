@@ -24,11 +24,34 @@ const postSlice = createSlice({
   reducers: {
     addPost: (state, action) => {
       const { id, title, description } = action.payload;
+
+      /*
+
+      action.payload = {
+        id: 1,
+        title: "test",
+        description: "lorem",
+      };
+
+      const id = action.payload.id;
+      const title = action.payload.title;
+      const description = action.payload.description;
+
+      */
+
       state.push({ id, title, description });
+
+      /*
+      state.push({
+        id: id,
+        title: title,
+        description: description,
+      });
+      */
     },
     deletePost: (state, action) => {
-      const postId = action.payload;
-      return state.filter((post) => post.id !== postId);
+      const { id } = action.payload;
+      return state.filter((post) => post.id !== id);
     },
   },
 });
