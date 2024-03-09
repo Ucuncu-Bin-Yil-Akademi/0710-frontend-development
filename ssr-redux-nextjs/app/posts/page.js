@@ -3,10 +3,14 @@ import { useState } from "react";
 import styles from "./page.module.css";
 import { useSelector, useDispatch } from "react-redux";
 import { addPost, deletePost } from "@/app/redux/slices/postSlice";
+import { counterAtom } from "@/app/atoms/counterAtom";
+import { useAtom } from "jotai";
 
 export default function Posts() {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
+  const [count, setCount] = useAtom(counterAtom);
+
   const posts = useSelector((state) => state.posts);
   const dispatch = useDispatch();
 
@@ -38,6 +42,9 @@ export default function Posts() {
   return (
     <>
       <div className={styles.containerElement}>
+        <h1 className="text-4xl font-bold text-gray-800 my-8">
+          Current Value of Counter: <b>{count}</b>
+        </h1>
         <form className={styles.formWrapper}>
           <input
             className={styles.inputElement}
