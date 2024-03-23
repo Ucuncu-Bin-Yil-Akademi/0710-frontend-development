@@ -1,6 +1,5 @@
-import LeftSidebar from "./Sidebar/LeftSidebar/LeftSidebar";
-import RightSidebar from "./Sidebar/RightSidebar/RightSidebar";
+import Sidebar from "./Sidebar/Sidebar";
 import Header from "./Header/Header";
 import Main from "./Main/Main";
 
-export { LeftSidebar, RightSidebar, Header, Main}
+export { Sidebar, Header, Main };

@@ -1,7 +1,11 @@
-export default function Main(){
-    return(
-        <>
-            <div className="bg-orange-500">Main</div>
-        </>
-    )
+import PublishArea from "./components/PublishArea/PublishArea";
+import ContentList from "./components/ContentList/ContentList";
+
+export default function Main() {
+  return (
+    <>
+      <PublishArea />
+      <ContentList />
+    </>
+  );
 }

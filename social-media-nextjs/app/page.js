@@ -1,4 +1,4 @@
-import { Header, LeftSidebar, RightSidebar, Main } from "@/app/components";
+import { Header, Sidebar, Main } from "@/app/components";
 
 export default function Home() {
   return (
@@ -7,14 +7,11 @@ export default function Home() {
         <Header />
       </div>
       <div className="flex p-6 justify-between w-full gap-5 h-full">
-        <div className="w-1/6">
-          <LeftSidebar />
-        </div>
         <div className="w-4/6">
           <Main />
         </div>
-        <div className="w-1/6">
-          <RightSidebar />
+        <div className="w-2/6">
+          <Sidebar />
         </div>
       </div>
     </div>
