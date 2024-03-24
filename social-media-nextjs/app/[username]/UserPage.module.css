@@ -1,0 +1,42 @@
+.biography {
+  color: rgb(197, 197, 197);
+  font-style: italic;
+}
+
+.biography::before {
+  content: "“";
+  margin-right: 10px;
+  font-size: 1.5em;
+  font-style: bold;
+  color: white;
+}
+
+.biography::after {
+  content: "”";
+  margin-left: 10px;
+  font-size: 1.5em;
+  font-style: bold;
+  color: white;
+}
+
+.coverWrapper {
+  position: absolute;
+  top: 0;
+  height: 100%;
+  width: 100%;
+  color: rgb(197, 197, 197);
+  background-color: rgba(0, 0, 0, 0.7);
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  border-radius: 10px;
+}
+
+.followSection {
+  grid-column-start: 2;
+  grid-column-end: 3;
+  grid-row-start: 1;
+  grid-row-end: 3;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

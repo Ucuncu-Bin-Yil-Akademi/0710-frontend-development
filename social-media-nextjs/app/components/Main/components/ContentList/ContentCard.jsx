@@ -32,12 +32,13 @@ export default function ContentCard() {
           mussels, if you like.
         </Typography>
       </CardContent>
-      <CardActions disableSpacing>
+      <CardActions
+        disableSpacing
+        className="flex justify-end items-center bg-gray-100"
+      >
+        <span>10 beğeni</span>
         <IconButton aria-label="add to favorites">
           <FavoriteIcon />
-        </IconButton>
-        <IconButton aria-label="share">
-          <ShareIcon />
         </IconButton>
       </CardActions>
     </Card>
