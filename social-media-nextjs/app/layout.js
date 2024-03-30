@@ -6,6 +6,7 @@ import { usePathname } from "next/navigation";
 import { useState, useEffect } from "react";
 import CircularProgress from "@mui/material/CircularProgress";
 import Sidebar from "@/app/components/Sidebar/Sidebar";
+import Cookies from "js-cookie";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -15,7 +16,15 @@ export default function RootLayout({ children }) {
   const pathname = usePathname();
 
   useEffect(() => {
+
+    const isCookieExists = Cookies.get("userToken");
+
     if (pathname !== "/login") {
+      if (!isCookieExists) {
+        window.location.href = "/login";
+        return;
+      }
+
       setIsLayoutVisible(true);
     }
     setIsLoading(false);
