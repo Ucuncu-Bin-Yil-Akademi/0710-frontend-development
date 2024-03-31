@@ -24,8 +24,12 @@ export default function RootLayout({ children }) {
         window.location.href = "/login";
         return;
       }
-
       setIsLayoutVisible(true);
+    } else{
+      if(isCookieExists){
+        window.location.href = "/";
+        return;
+      }
     }
     setIsLoading(false);
   }, []);

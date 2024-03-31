@@ -1,3 +1,4 @@
+"use client"
 import {
   TextField,
   IconButton,
@@ -7,7 +8,10 @@ import {
   Button,
 } from "../../components";
 
+import { useState } from "react";
+
 export default function PublishArea() {
+  const [newContent, setNewContent] = useState("");
   return (
     <div className="bg-gray-50 border p-5 rounded">
       <div className="w-full p-3 rounded">
@@ -19,6 +23,8 @@ export default function PublishArea() {
           id="outlined-multiline-static"
           multiline
           rows={2}
+          value={newContent}
+          onChange={(e) => setNewContent(e.target.value)}
           placeholder="Yeni bir şeyler deneyin..."
         />
         <div className="flex justify-between items-center mt-5">
@@ -29,10 +35,6 @@ export default function PublishArea() {
 
             <IconButton>
               <AddPhotoAlternateIcon />
-            </IconButton>
-
-            <IconButton>
-              <LinkIcon />
             </IconButton>
           </div>
 

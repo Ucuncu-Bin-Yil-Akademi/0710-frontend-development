@@ -1,6 +1,7 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Image from "next/image";
+import axios from "axios";
 import IconButton from "@mui/material/IconButton";
 import HeadsetMicIcon from "@mui/icons-material/HeadsetMic";
 import NotificationsIcon from "@mui/icons-material/Notifications";
@@ -18,13 +19,31 @@ import MenuItem from "@mui/material/MenuItem";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
-import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
+import Cookies from "js-cookie";
+import { useRouter } from "next/navigation";
+import Swal from "sweetalert2";
 
 export default function Header() {
   const [anchorEl, setAnchorEl] = useState(null);
   const [settingModalOpen, setSettingsModalOpen] = useState(false);
 
+  const [loggedUserInfo, setLoggedUserInfo] = useState({
+    name: "",
+    lastname: "",
+    username: "",
+  });
+
+  const [newUserInfo, setNewUserInfo] = useState({
+    name: "",
+    lastname: "",
+    username: "",
+  });
+
+  const [currentPassword, setCurrentPassword] = useState("");
+  const [newPassword, setNewPassword] = useState("");
+
+  const router = useRouter();
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -41,6 +60,91 @@ export default function Header() {
   const handleCloseSettingsModal = () => {
     setSettingsModalOpen(false);
   };
+
+  const handleLogout = () => {
+    Cookies.remove("userToken");
+    localStorage.removeItem("loggedUserInfo");
+    window.location.href = "/login";
+  };
+
+  const handleUpdateUser = async () => {
+    const loggedUserName = loggedUserInfo.name;
+    const loggedUserLastname = loggedUserInfo.lastname;
+    const loggedUserUsername = loggedUserInfo.username;
+
+    const newUserName = newUserInfo.name;
+    const newUserLastname = newUserInfo.lastname;
+    const newUserUsername = newUserInfo.username;
+
+    if (
+      ((newUserName !== loggedUserName ||
+        newUserLastname !== loggedUserLastname ||
+        newUserUsername !== loggedUserUsername) &&
+        (newUserName !== "" ||
+          newUserLastname !== "" ||
+          newUserUsername !== "")) || (currentPassword && newPassword)
+    ) {
+      try {
+        await axios
+          .put(
+            "http://localhost:3000/users",
+            {
+              name: newUserName !== "" ? newUserName : loggedUserName,
+              lastname:
+                newUserLastname !== "" ? newUserLastname : loggedUserLastname,
+              username:
+                newUserUsername !== "" ? newUserUsername : loggedUserUsername,
+              currentPassword: currentPassword ? currentPassword : null,
+              password: newPassword ? newPassword : null,
+            },
+            {
+              headers: {
+                Authorization: `Bearer ${Cookies.get("userToken")}`,
+              },
+            }
+          )
+          .then((response) => {
+            Swal.fire({
+              icon: "success",
+              title: "Başarılı!",
+              text: response.data.message,
+            })
+
+            const {name, lastname, username} = response.data.user;
+            const newUserData = {
+              name,
+              lastname,
+              username
+            }
+
+            localStorage.setItem("loggedUserInfo", JSON.stringify(newUserData));
+            setLoggedUserInfo(newUserData);
+          });
+      } catch (error) {
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: error.response.data.message,
+        })
+      }
+
+      setSettingsModalOpen(false);
+    }
+  };
+
+  useEffect(() => {
+    const userData = localStorage.getItem("loggedUserInfo");
+    if (!userData) {
+      window.location.href = "/login";
+    } else {
+      const userDataObject = JSON.parse(userData);
+      setLoggedUserInfo({
+        name: userDataObject.name,
+        lastname: userDataObject.lastname,
+        username: userDataObject.username,
+      });
+    }
+  }, []);
 
   return (
     <>
@@ -81,7 +185,9 @@ export default function Header() {
             <NotificationsIcon />
           </IconButton>
 
-          <span className="ml-10 mr-3 font-semibold text-lg">Vinc.rangga</span>
+          <span className="ml-10 mr-3 font-semibold text-lg">
+            {loggedUserInfo?.username}
+          </span>
           <Avatar
             alt="Remy Sharp"
             src="https://mui.com/static/images/avatar/2.jpg"
@@ -104,9 +210,16 @@ export default function Header() {
               "aria-labelledby": "basic-button",
             }}
           >
-            <MenuItem onClick={handleClose}>My account</MenuItem>
+            <MenuItem
+              onClick={() => {
+                router.push(`/${loggedUserInfo?.username}`);
+                handleClose();
+              }}
+            >
+              My account
+            </MenuItem>
             <MenuItem onClick={handleOpenSettingsModal}>Settings</MenuItem>
-            <MenuItem onClick={handleClose}>Logout</MenuItem>
+            <MenuItem onClick={handleLogout}>Logout</MenuItem>
           </Menu>
         </div>
         {/* End:: Action Buttons */}
@@ -117,15 +230,75 @@ export default function Header() {
         onClose={handleCloseSettingsModal}
         aria-describedby="alert-dialog-slide-description"
       >
-        <DialogTitle>{"Use Google's location service?"}</DialogTitle>
-        <DialogContent>
-          <DialogContentText id="alert-dialog-slide-description">
-            Let Google help apps determine location. This means sending
-            anonymous location data to Google, even when no apps are running.
-          </DialogContentText>
+        <DialogTitle>Profilini Güncelle</DialogTitle>
+        <DialogContent
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            gap: "1rem",
+          }}
+        >
+          <div className="grid grid-cols-2 gap-3">
+            <TextField
+              id="input-with-icon-textfield"
+              variant="outlined"
+              size="small"
+              placeholder={loggedUserInfo?.name}
+              value={newUserInfo?.name}
+              onChange={(e) =>
+                setNewUserInfo({ ...newUserInfo, name: e.target.value })
+              }
+            />
+            <TextField
+              id="input-with-icon-textfield"
+              variant="outlined"
+              size="small"
+              placeholder={loggedUserInfo?.lastname}
+              value={newUserInfo?.lastname}
+              onChange={(e) =>
+                setNewUserInfo({ ...newUserInfo, lastname: e.target.value })
+              }
+            />
+          </div>
+          <div className="w-full">
+            <TextField
+              className="w-full"
+              id="input-with-icon-textfield"
+              variant="outlined"
+              size="small"
+              placeholder={loggedUserInfo?.username}
+              value={newUserInfo?.username}
+              onChange={(e) =>
+                setNewUserInfo({ ...newUserInfo, username: e.target.value })
+              }
+            />
+          </div>
+          <div className="grid grid-cols-2 gap-3">
+            <TextField
+              className="w-full"
+              id="input-with-icon-textfield"
+              type="password"
+              variant="outlined"
+              size="small"
+              placeholder="Mevcut Şifre"
+              value={currentPassword}
+              onChange={(e) => setCurrentPassword(e.target.value)}
+            />
+            <TextField
+              className="w-full"
+              type="password"
+              id="input-with-icon-textfield"
+              variant="outlined"
+              size="small"
+              placeholder="Yeni Şifre"
+              value={newPassword}
+              onChange={(e) => setNewPassword(e.target.value)}
+            />
+          </div>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleCloseSettingsModal}>Disagree</Button>
+          <Button onClick={handleCloseSettingsModal}>Vazgeç</Button>
+          <Button onClick={handleUpdateUser}>Güncelle</Button>
         </DialogActions>
       </Dialog>
     </>
