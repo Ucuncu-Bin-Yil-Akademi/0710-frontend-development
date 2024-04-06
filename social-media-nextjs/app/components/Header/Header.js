@@ -82,7 +82,8 @@ export default function Header() {
         newUserUsername !== loggedUserUsername) &&
         (newUserName !== "" ||
           newUserLastname !== "" ||
-          newUserUsername !== "")) || (currentPassword && newPassword)
+          newUserUsername !== "")) ||
+      (currentPassword && newPassword)
     ) {
       try {
         await axios
@@ -108,14 +109,14 @@ export default function Header() {
               icon: "success",
               title: "Başarılı!",
               text: response.data.message,
-            })
+            });
 
-            const {name, lastname, username} = response.data.user;
+            const { name, lastname, username } = response.data.user;
             const newUserData = {
               name,
               lastname,
-              username
-            }
+              username,
+            };
 
             localStorage.setItem("loggedUserInfo", JSON.stringify(newUserData));
             setLoggedUserInfo(newUserData);
@@ -125,7 +126,7 @@ export default function Header() {
           icon: "error",
           title: "Oops...",
           text: error.response.data.message,
-        })
+        });
       }
 
       setSettingsModalOpen(false);
@@ -134,9 +135,7 @@ export default function Header() {
 
   useEffect(() => {
     const userData = localStorage.getItem("loggedUserInfo");
-    if (!userData) {
-      window.location.href = "/login";
-    } else {
+    if (userData) {
       const userDataObject = JSON.parse(userData);
       setLoggedUserInfo({
         name: userDataObject.name,

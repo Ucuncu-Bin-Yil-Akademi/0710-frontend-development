@@ -8,35 +8,50 @@ import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
 import { red } from "@mui/material/colors";
 import FavoriteIcon from "@mui/icons-material/Favorite";
-import ShareIcon from "@mui/icons-material/Share";
-import MoreVertIcon from "@mui/icons-material/MoreVert";
+import { dateFormatter } from "@/app/utils/dateFormatter";
 
-export default function ContentCard() {
+export default function ContentCard({
+  summary,
+  imageUrl,
+  firstname,
+  lastname,
+  createdOn,
+  likes,
+}) {
   return (
-    <Card sx={{ maxWidth: 345 }}>
+    <Card
+      sx={{
+        maxWidth: 345,
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "space-between",
+      }}
+    >
       <CardHeader
-        avatar={<Avatar sx={{ bgcolor: red[500] }}>R</Avatar>}
-        title="Shrimp and Chorizo Paella"
-        subheader="September 14, 2016"
+        avatar={<Avatar sx={{ bgcolor: red[500] }}>{firstname[0]}</Avatar>}
+        title={`${firstname} ${lastname}`}
+        subheader={dateFormatter(createdOn)}
       />
-      <CardMedia
-        component="img"
-        height="200"
-        image="https://picsum.photos/500/500"
-        alt="Paella dish"
-      />
+      {imageUrl && (
+        <CardMedia
+          component="img"
+          className="object-cover"
+          image={
+            "https://wuubi-media.s3.eu-central-1.amazonaws.com/" + imageUrl
+          }
+          alt="Paella dish"
+        />
+      )}
       <CardContent>
         <Typography variant="body2" color="text.secondary">
-          This impressive paella is a perfect party dish and a fun meal to cook
-          together with your guests. Add 1 cup of frozen peas along with the
-          mussels, if you like.
+          {summary}
         </Typography>
       </CardContent>
       <CardActions
         disableSpacing
         className="flex justify-end items-center bg-gray-100"
       >
-        <span>10 beğeni</span>
+        <span>{likes} beğeni</span>
         <IconButton aria-label="add to favorites">
           <FavoriteIcon />
         </IconButton>
