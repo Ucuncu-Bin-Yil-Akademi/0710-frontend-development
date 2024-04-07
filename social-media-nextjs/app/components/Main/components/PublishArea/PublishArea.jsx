@@ -4,13 +4,14 @@ import Popover from "@mui/material/Popover";
 import Swal2 from "sweetalert2";
 import axios from "axios";
 import Cookies from "js-cookie";
+import { contentListDataAtom } from "@/app/atoms/contentListAtom";
+import { useAtom } from "jotai";
+import { getAllContents } from "@/app/services/publications";
 
 import {
   TextField,
-  IconButton,
   YouTubeIcon,
   AddPhotoAlternateIcon,
-  LinkIcon,
   Button,
 } from "../../components";
 
@@ -22,6 +23,7 @@ export default function PublishArea() {
   const [youtubeUrl, setYoutubeUrl] = useState("");
   const [youtubeVideoCode, setYoutubeVideoCode] = useState("");
   const [selectedImage, setSelectedImage] = useState(null);
+  const [, setContentListData] = useAtom(contentListDataAtom);
 
   const isYoutubePopoverOpen = Boolean(youtubePopover);
   const idYoutubePopover = isYoutubePopoverOpen ? "youtube-popover" : undefined;
@@ -41,7 +43,7 @@ export default function PublishArea() {
           Authorization: `Bearer ${userCookie}`,
         },
       })
-      .then((response) => {
+      .then(async (response) => {
         if (response.status === 200) {
           Swal2.fire({
             icon: "success",
@@ -53,6 +55,18 @@ export default function PublishArea() {
           setYoutubeVideoCode("");
           setNewContent("");
           setSelectedImage(null);
+
+          await getAllContents(function (res) {
+            if (res.status === 200) {
+              setContentListData(res.data.publications);
+            } else {
+              Swal2.fire({
+                icon: "error",
+                title: "Hata",
+                text: "İçerikler getirilirken bir hata oluştu.",
+              });
+            }
+          });
         } else {
           Swal2.fire({
             icon: "error",

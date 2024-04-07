@@ -1,56 +1,41 @@
-export default function PopularContentCard() {
+"use client";
+import { useState, useEffect } from "react";
+import { getPopularContents } from "@/app/services/publications";
+import { dateFormatter } from "@/app/utils/dateFormatter";
+
+const PopularContentCard = () => {
+  const [popularContents, setPopularContents] = useState([]);
+
+  const handleGetPopularContents = async () => {
+    await getPopularContents(function (res) {
+      if (res.status === 200) {
+        setPopularContents(res.data.publications);
+      }
+    });
+  };
+
+  useEffect(() => {
+    handleGetPopularContents();
+  }, []);
   return (
     <div className="flex flex-col gap-5">
-      <div className="bg-gray-50 border p-2 rounded">
-        <h4 className="text-gray-700 text-lg">
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-        </h4>
-        <div className="flex gap-2 text-gray-400 text-sm pb-3">
-          <span>@canberk</span>
-          <span>•</span>
-          <span>23.03.2024 11:30</span>
-        </div>
-        <p className="text-gray-500 text-sm">
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do
-          eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
-          minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-          aliquip ex ea commodo consequat.
-        </p>
-      </div>
-
-      <div className="bg-gray-50 border p-2 rounded">
-        <h4 className="text-gray-700 text-lg">
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-        </h4>
-        <div className="flex gap-2 text-gray-400 text-sm pb-3">
-          <span>@canberk</span>
-          <span>•</span>
-          <span>23.03.2024 11:30</span>
-        </div>
-        <p className="text-gray-500 text-sm">
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do
-          eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
-          minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-          aliquip ex ea commodo consequat.
-        </p>
-      </div>
-
-      <div className="bg-gray-50 border p-2 rounded">
-        <h4 className="text-gray-700 text-lg">
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-        </h4>
-        <div className="flex gap-2 text-gray-400 text-sm pb-3">
-          <span>@canberk</span>
-          <span>•</span>
-          <span>23.03.2024 11:30</span>
-        </div>
-        <p className="text-gray-500 text-sm">
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do
-          eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
-          minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-          aliquip ex ea commodo consequat.
-        </p>
-      </div>
+      {popularContents?.map((post) => {
+        return (
+          <div className="bg-gray-50 border p-2 rounded" key={post._id}>
+            <div className="flex gap-2 text-gray-400 text-sm pb-3">
+              <span>@{`${post.user[0]?.username}`}</span>
+              <span>•</span>
+              <span>{dateFormatter(post.createdAt)}</span>
+            </div>
+            <p className="text-gray-500 text-sm">{post.content}</p>
+            <p className="text-gray-500 text-sm mt-3">
+              Toplam <b>{post.likes?.length || 0}</b> kişi tarafından beğenildi.
+            </p>
+          </div>
+        );
+      })}
     </div>
   );
-}
+};
+
+export default PopularContentCard;

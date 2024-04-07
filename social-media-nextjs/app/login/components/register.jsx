@@ -33,7 +33,23 @@ export default function RegisterForm({ setFormType }) {
           bio: registerFormData.bio,
         })
         .then((response) => {
-          Cookies.set("userToken", response.data.token);
+          debugger;
+          const { token } = response.data;
+          const { name, lastname, username, _id } = response.data.user;
+          Cookies.set("userToken", token);
+
+          const loggedUserInfo = {
+            name,
+            lastname,
+            username,
+            _id,
+          };
+
+          localStorage.setItem(
+            "loggedUserInfo",
+            JSON.stringify(loggedUserInfo)
+          );
+
           window.location.href = "/";
         });
     } catch (error) {
