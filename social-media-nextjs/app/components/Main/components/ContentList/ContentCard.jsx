@@ -45,7 +45,7 @@ export default function ContentCard({
     <>
       <div className="flex flex-col justify-between bg-gray-100 rounded border">
         <div className="flex items-center gap-3 bg-gray-200 p-5">
-          <Avatar sx={{ bgcolor: red[500] }}>{firstname[0]}</Avatar>
+          <Avatar sx={{ bgcolor: red[500] }}>{firstname?.[0]}</Avatar>
           <div className="flex flex-col">
             <a href={username}>{`${firstname} ${lastname}`}</a>
             <span className="text-sm text-gray-400">

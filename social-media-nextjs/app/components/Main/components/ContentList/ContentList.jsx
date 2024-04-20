@@ -5,10 +5,14 @@ import { useAtom } from "jotai";
 import Masonry from "@mui/lab/Masonry";
 import { getAllContents } from "@/app/services/publications";
 import Swal2 from "sweetalert2";
-import Pagination from "@mui/material/Pagination";
+import InfiniteScroll from "react-infinite-scroll-component";
+import { searchValueAtom } from "@/app/atoms/searchAtom";
 
 export default function ContentList() {
   const [contentListData, setContentListData] = useAtom(contentListDataAtom);
+  const [hasMore, setHasMore] = useState(true);
+  const [search, setSearch] = useAtom(searchValueAtom);
+
   const [pagination, setPagination] = useState({
     currentPage: 1,
     totalPages: 1,
@@ -16,34 +20,47 @@ export default function ContentList() {
   });
 
   const getPublicationList = async () => {
-    await getAllContents(function (res) {
-      if (res.status === 200) {
-        setContentListData(res.data.publications);
-        if (!pagination.totalContents) {
-          setPagination({
-            currentPage: res.data.currentPage,
-            totalPages: res.data.totalPages,
-            totalContents: res.data.totalPosts,
+    await getAllContents(
+      function (res) {
+        if (res.status === 200) {
+          if (!search && search !== "") {
+            const currentContents = contentListData;
+            const newContents = res.data.publications;
+            let mergedContent = [...currentContents, ...newContents];
+            setContentListData(mergedContent);
+          } else {
+            setContentListData(res.data.publications);
+          }
+          if (!pagination.totalContents) {
+            setPagination({
+              currentPage: res.data.currentPage,
+              totalPages: res.data.totalPages,
+              totalContents: res.data.totalPosts,
+            });
+          }
+
+          if (res.data.totalPages === pagination.currentPage) setHasMore(false);
+        } else {
+          Swal2.fire({
+            icon: "error",
+            title: "Hata",
+            text: "İçerikler getirilirken bir hata oluştu.",
           });
         }
-      } else {
-        Swal2.fire({
-          icon: "error",
-          title: "Hata",
-          text: "İçerikler getirilirken bir hata oluştu.",
-        });
-      }
-    }, pagination.currentPage);
+      },
+      pagination.currentPage,
+      search
+    );
   };
 
   useEffect(() => {
     getPublicationList();
-  }, [pagination]);
+  }, [pagination, search]);
 
-  const handlePageChange = (event, newPage) => {
+  const getMoreContents = () => {
     setPagination({
       ...pagination,
-      currentPage: newPage,
+      currentPage: pagination.currentPage + 1,
     });
   };
 
@@ -52,32 +69,36 @@ export default function ContentList() {
       <h1 className="text-2xl font-bold text-gray-600 my-10">
         Son Paylaşılan İçerikler
       </h1>
-      <Masonry columns={3} spacing={2}>
-        {contentListData?.map((content) => {
-          return (
-            <ContentCard
-              key={content._id}
-              id={content._id}
-              summary={content.content}
-              imageUrl={content.images?.length > 0 ? content.images[0] : null}
-              likes={content.likes}
-              firstname={content.user[0].name}
-              lastname={content.user[0].lastname}
-              username={content.user[0].username}
-              createdOn={content.createdAt}
-              youtubeVideoCode={content.embedVideo}
-            />
-          );
-        })}
-      </Masonry>
-
-      <div className="w-full flex justify-center my-10">
-        <Pagination
-          count={pagination.totalPages}
-          color="primary"
-          onChange={handlePageChange}
-        />
-      </div>
+      <InfiniteScroll
+        dataLength={contentListData.length}
+        next={() => getMoreContents()}
+        hasMore={hasMore}
+        loader={<h4>Loading...</h4>}
+        endMessage={
+          <p style={{ textAlign: "center" }}>
+            <b>Bütün içerikleri görüntülediniz.</b>
+          </p>
+        }
+      >
+        <Masonry columns={3} spacing={2}>
+          {contentListData?.map((content) => {
+            return (
+              <ContentCard
+                key={content._id}
+                id={content._id}
+                summary={content.content}
+                imageUrl={content.images?.length > 0 ? content.images[0] : null}
+                likes={content.likes}
+                firstname={content.user[0].name}
+                lastname={content.user[0].lastname}
+                username={content.user[0].username}
+                createdOn={content.createdAt}
+                youtubeVideoCode={content.embedVideo}
+              />
+            );
+          })}
+        </Masonry>
+      </InfiniteScroll>
     </div>
   );
 }

@@ -23,10 +23,13 @@ import DialogTitle from "@mui/material/DialogTitle";
 import Cookies from "js-cookie";
 import { useRouter } from "next/navigation";
 import Swal from "sweetalert2";
+import { searchValueAtom } from "@/app/atoms/searchAtom";
+import { useAtom } from "jotai";
 
 export default function Header() {
   const [anchorEl, setAnchorEl] = useState(null);
   const [settingModalOpen, setSettingsModalOpen] = useState(false);
+  const [searchValue, setSearchValue] = useAtom(searchValueAtom);
 
   const [loggedUserInfo, setLoggedUserInfo] = useState({
     name: "",
@@ -150,7 +153,12 @@ export default function Header() {
       <div className="flex items-center border-b-2 p-6 justify-between">
         {/* Begin:: LOGO */}
         <Link href="/" alt="Ana sayfa">
-          <Image src={Logo} alt="" />
+          <Image
+            src="https://www.ucuncubinyil.com/wp-content/uploads/2023/10/ucuncubinyil-logo.png"
+            width={200}
+            height={50}
+            alt=""
+          />
         </Link>
         {/* End:: LOGO */}
 
@@ -161,6 +169,8 @@ export default function Header() {
             style={{
               width: "50%",
             }}
+            value={searchValue}
+            onChange={(e) => setSearchValue(e.target.value)}
             variant="outlined"
             size="small"
             InputProps={{

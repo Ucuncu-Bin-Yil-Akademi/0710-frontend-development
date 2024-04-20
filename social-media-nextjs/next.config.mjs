@@ -10,7 +10,7 @@ const nextConfig = {
       },
       {
         protocol: "https",
-        hostname: "ucuncubinyil.com",
+        hostname: "www.ucuncubinyil.com",
         port: "",
         pathname: "/**",
       },
