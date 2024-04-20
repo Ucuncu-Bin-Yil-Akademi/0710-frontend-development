@@ -2,9 +2,10 @@ import axios from "axios";
 import Cookies from "js-cookie";
 const userCookie = Cookies.get("userToken");
 
-const getAllContents = async (callback) => {
+const getAllContents = async (callback, currentPage = 1) => {
+  const reqUrl = "http://localhost:3000/publications?page=" + currentPage;
   await axios
-    .get("http://localhost:3000/publications", {
+    .get(reqUrl, {
       headers: {
         Authorization: `Bearer ${userCookie}`,
       },

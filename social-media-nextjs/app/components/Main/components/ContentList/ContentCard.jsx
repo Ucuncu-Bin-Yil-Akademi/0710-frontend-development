@@ -18,6 +18,8 @@ export default function ContentCard({
   lastname,
   createdOn,
   likes,
+  youtubeVideoCode,
+  username,
 }) {
   const [contentListData, setContentListData] = useAtom(contentListDataAtom);
 
@@ -45,14 +47,28 @@ export default function ContentCard({
         <div className="flex items-center gap-3 bg-gray-200 p-5">
           <Avatar sx={{ bgcolor: red[500] }}>{firstname[0]}</Avatar>
           <div className="flex flex-col">
-            <span>{`${firstname} ${lastname}`}</span>
+            <a href={username}>{`${firstname} ${lastname}`}</a>
             <span className="text-sm text-gray-400">
               {dateFormatter(createdOn)}
             </span>
           </div>
         </div>
 
-        {imageUrl && (
+        {youtubeVideoCode && (
+          <div className="">
+            <iframe
+              height="300"
+              src={`https://www.youtube.com/embed/${youtubeVideoCode}`}
+              frameborder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              referrerpolicy="strict-origin-when-cross-origin"
+              allowfullscreen
+              className="w-full rounded-b-md"
+            ></iframe>
+          </div>
+        )}
+
+        {imageUrl && !youtubeVideoCode && (
           <div className="h-full">
             <Image
               src={
