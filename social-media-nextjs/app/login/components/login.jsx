@@ -24,8 +24,6 @@ export default function LoginForm({ setFormType }) {
         const token = response.data.token;
         const _id = response.data._id;
         */
-          debugger;
-
           Cookies.set("userToken", token);
 
           const loggedUserInfo = {

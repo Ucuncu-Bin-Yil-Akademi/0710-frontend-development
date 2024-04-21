@@ -42,7 +42,7 @@ function a11yProps(index) {
   };
 }
 
-export default function UserMain() {
+export default function UserMain({ userData, currentUserId, handleFollow }) {
   const [value, setValue] = useState(0);
 
   const handleChange = (event, newValue) => {
@@ -63,13 +63,21 @@ export default function UserMain() {
           </Tabs>
         </Box>
         <CustomTabPanel value={value} index={0}>
-          <UserContentList />
+          <UserContentList userData={userData} />
         </CustomTabPanel>
         <CustomTabPanel value={value} index={1}>
-          <UserFollowersList />
+          <UserFollowersList
+            userData={userData}
+            currentUserId={currentUserId}
+            handleFollow={handleFollow}
+          />
         </CustomTabPanel>
         <CustomTabPanel value={value} index={2}>
-          <UserFollowingList />
+          <UserFollowingList
+            userData={userData}
+            currentUserId={currentUserId}
+            handleFollow={handleFollow}
+          />
         </CustomTabPanel>
       </Box>
     </>

@@ -18,14 +18,14 @@ export default function RootLayout({ children }) {
   useEffect(() => {
     const isCookieExists = Cookies.get("userToken");
 
-    if (pathname !== "/login") {
+    if (pathname !== "/login" && pathname !== "/404") {
       if (!isCookieExists) {
         window.location.href = "/login";
         return;
       }
       setIsLayoutVisible(true);
     } else {
-      if (isCookieExists) {
+      if (isCookieExists && pathname !== "/404") {
         window.location.href = "/";
         return;
       }

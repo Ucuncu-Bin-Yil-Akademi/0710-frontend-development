@@ -33,7 +33,6 @@ export default function RegisterForm({ setFormType }) {
           bio: registerFormData.bio,
         })
         .then((response) => {
-          debugger;
           const { token } = response.data;
           const { name, lastname, username, _id } = response.data.user;
           Cookies.set("userToken", token);
