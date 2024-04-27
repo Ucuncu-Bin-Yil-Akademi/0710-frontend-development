@@ -55,7 +55,7 @@ export default function ContentCard({
         </div>
 
         {youtubeVideoCode && (
-          <div className="">
+          <div className="lorem">
             <iframe
               height="300"
               src={`https://www.youtube.com/embed/${youtubeVideoCode}`}
