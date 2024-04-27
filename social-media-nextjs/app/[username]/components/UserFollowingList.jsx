@@ -1,5 +1,9 @@
 import UserCard from "./UserCard";
-export default function UserFollowingList({ userData }) {
+export default function UserFollowingList({
+  userData,
+  currentUserId,
+  handleFollow,
+}) {
   return (
     <>
       <h2 className="my-3 text-lg text-gray-600">
@@ -15,6 +19,8 @@ export default function UserFollowingList({ userData }) {
                 lastname={user.lastname}
                 username={user.username}
                 followers={user.userFollowers}
+                currentUserId={currentUserId}
+                handleFollow={handleFollow}
               />
             </>
           );

@@ -7,12 +7,34 @@ module.exports = {
   ],
   theme: {
     extend: {
-      backgroundImage: {
-        "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
-        "gradient-conic":
-          "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
+      colors: {
+        mycolor: {
+          100: "#f7f7f7",
+          200: "#eaeaea",
+          300: "#dcdcdc",
+          400: "#bfbfbf",
+          500: "#a0a0a0",
+          600: "#7d7d7d",
+          700: "#595959",
+          800: "#404040",
+          900: "#262626",
+        },
       },
     },
   },
-  plugins: [],
+  plugins: [
+    function ({ addUtilities, theme }) {
+      const myButtonUtilities = {
+        ".myButton": {
+          padding: ".5rem 1rem",
+          color: "white",
+          fontWeight: "bold",
+          borderRadius: ".25rem",
+          backgroundColor: theme("colors.mycolor.900"),
+        },
+      };
+
+      addUtilities(myButtonUtilities);
+    },
+  ],
 };

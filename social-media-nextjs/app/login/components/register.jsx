@@ -117,10 +117,7 @@ export default function RegisterForm({ setFormType }) {
         onChange={handleChangeValue}
       />
 
-      <button
-        className="bg-blue-400 py-2 text-white font-semibold rounded"
-        onClick={handleRegister}
-      >
+      <button className="myButton" onClick={handleRegister}>
         Kayıt Ol
       </button>
 
