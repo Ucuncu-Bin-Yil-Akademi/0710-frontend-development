@@ -17,6 +17,7 @@ import { RouterView } from "vue-router";
   background-color: #cccccc;
   color: rgb(74, 74, 74);
   padding: 20px;
+  box-sizing: border-box;
   display: flex;
   align-items: center;
 }
