@@ -4,7 +4,7 @@ defineProps({
   msg: {
     type: String,
     required: true
-  }
+  },
 })
 
 const heightValue = 300
