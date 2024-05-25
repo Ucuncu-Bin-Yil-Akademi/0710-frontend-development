@@ -1,14 +1,22 @@
 <script setup>
 import { ref } from "vue";
+import DashboardMain from "@/components/DashboardMain.vue";
+import StudentsMain from "@/components/StudentsMain.vue";
+import CoursesMain from "@/components/CoursesMain.vue";
+import AttendanceMain from "@/components/AttendanceMain.vue";
+import AdminsMain from "@/components/AdminsMain.vue";
 
 let currentMenuItem = ref(0);
 
 const menuItems = [
-  { name: "Anasayfa" },
-  { name: "Sınıflar" },
-  { name: "Öğrenciler" },
-  { name: "Eğitimler" },
-  { name: "Yoklama" },
+  {
+    name: "Anasayfa",
+    component: DashboardMain,
+  },
+  { name: "Eğitimler", component: CoursesMain },
+  { name: "Öğrenciler", component: StudentsMain },
+  { name: "Yoklama", component: AttendanceMain },
+  { name: "Yöneticiler", component: AdminsMain },
 ];
 </script>
 <template>
@@ -16,7 +24,7 @@ const menuItems = [
     <div
       class="w-full bg-gray-200 p-3 flex items-center justify-between shadow"
     >
-      <h1 class="text-2xl font-semibold">Kurs Yönetim Portali</h1>
+      <h1 class="text-2xl font-semibold mx-3">Kurs Yönetim Portali</h1>
       <button class="bg-blue-800 px-6 py-3 rounded text-white">
         Çıkış Yap
       </button>
@@ -38,7 +46,7 @@ const menuItems = [
       </div>
       <div class="bg-gray-200 w-5/6 p-3 rounded min-h-[750px]">
         <div>
-          <h2>Content Area</h2>
+          <component :is="menuItems[currentMenuItem].component" />
         </div>
       </div>
     </div>
