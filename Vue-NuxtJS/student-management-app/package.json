@@ -12,9 +12,12 @@
   "dependencies": {
     "@mdi/font": "^7.4.47",
     "ag-grid-vue3": "^31.3.2",
+    "axios": "^1.7.2",
+    "moment": "^2.30.1",
     "nuxt": "^3.11.2",
     "vue": "^3.4.27",
-    "vue-router": "^4.3.2"
+    "vue-router": "^4.3.2",
+    "vue3-toastify": "^0.2.1"
   },
   "devDependencies": {
     "autoprefixer": "^10.4.19",
