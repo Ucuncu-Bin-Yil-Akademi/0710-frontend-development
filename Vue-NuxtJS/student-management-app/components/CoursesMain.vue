@@ -1,7 +1,7 @@
 <template>
   <div class="p-5">
     <div class="flex items-center justify-between">
-      <h1 class="text-2xl">Eğitimler (6)</h1>
+      <h1 class="text-2xl">Eğitimler ({{ courses?.length || 0 }})</h1>
 
       <v-dialog max-width="500">
         <template v-slot:activator="{ props: activatorProps }">
@@ -16,13 +16,17 @@
         <template v-slot:default="{ isActive }">
           <v-card title="Yeni Eğitim Oluştur">
             <v-card-text>
-              <v-text-field variant="solo" label="Eğitim Adı"></v-text-field>
+              <v-text-field
+                variant="solo"
+                v-model="newCourse.courseName"
+                label="Eğitim Adı"
+              ></v-text-field>
               <div class="flex gap-3">
                 <v-dialog max-width="500">
                   <template v-slot:activator="{ props: activatorProps }">
                     <v-text-field
                       variant="solo"
-                      v-model="newCourse.startDate"
+                      v-model="startDate"
                       placeholder="Tarih Seçiniz"
                       readonly
                       v-bind="activatorProps"
@@ -30,9 +34,7 @@
                   </template>
 
                   <template v-slot:default="{ startDateDialog }">
-                    <v-date-picker
-                      v-model="newCourse.startDate"
-                    ></v-date-picker>
+                    <v-date-picker v-model="startDate"></v-date-picker>
                   </template>
                 </v-dialog>
 
@@ -40,7 +42,7 @@
                   <template v-slot:activator="{ props: activatorProps }">
                     <v-text-field
                       variant="solo"
-                      v-model="newCourse.endDate"
+                      v-model="endDate"
                       placeholder="Tarih Seçiniz"
                       readonly
                       v-bind="activatorProps"
@@ -48,7 +50,7 @@
                   </template>
 
                   <template v-slot:default="{ endDateDialog }">
-                    <v-date-picker v-model="newCourse.endDate"></v-date-picker>
+                    <v-date-picker v-model="endDate"></v-date-picker>
                   </template>
                 </v-dialog>
               </div>
@@ -65,7 +67,7 @@
                   v-model="newCourse.students"
                   :items="students"
                   item-title="name"
-                  item-value="id"
+                  item-value="_id"
                   multiple
                   persistent-hint
                 ></v-select>
@@ -109,7 +111,7 @@
           {{ moment(course.endDate).format("DD.MM.YYYY") }}
         </span>
         <span
-          ><b>Eğitmen:</b> {{ course.instructor.name || "Eğitmen atanmadı" }}
+          ><b>Eğitmen:</b> {{ course?.instructor?.name || "Eğitmen atanmadı" }}
           {{ course?.instructor?.lastName }}</span
         >
         <div class="flex gap-3 mt-3">
@@ -209,28 +211,49 @@
             </template>
           </v-dialog>
 
-          <v-btn color="error" text>Eğitimi Sil</v-btn>
+          <v-btn color="error" text @click="handleDeleteCourse(course._id)"
+            >Eğitimi Sil</v-btn
+          >
         </div>
       </div>
     </div>
+
+    <v-snackbar v-model="snackbar" multi-line location="top">
+      {{ text }}
+
+      <template v-slot:actions>
+        <v-btn color="red" variant="text" @click="snackbar = false">
+          Kapat
+        </v-btn>
+      </template>
+    </v-snackbar>
   </div>
 </template>
 
 <script setup>
-import { ref, onMounted } from "vue";
+import { ref, onMounted, watch } from "vue";
 import axios from "axios";
 import moment from "moment";
 
 const courses = ref([]);
 const instructors = ref([]);
 const students = ref([]);
+const snackbar = ref(false);
+const text = ref("");
 
 const startDate = ref(null);
+const startDateDialog = ref(false);
 const endDate = ref(null);
+const endDateDialog = ref(false);
 const selectedStudents = ref([]);
 const selectedInstructor = ref(null);
 
 const selectedCourse = ref(null);
+
+watch(selectedCourse, (newValue) => {
+  selectedStudents.value = newValue.students;
+  selectedInstructor.value = newValue.instructor;
+});
 
 const newCourse = ref({
   courseName: "",
@@ -291,6 +314,8 @@ const handleUpdateCourse = async () => {
     );
 
     if (response.status === 200) {
+      snackbar.value = true;
+      text.value = "Eğitim başarıyla güncellendi.";
       await handleGetCourses();
     }
   } catch (error) {
@@ -298,13 +323,32 @@ const handleUpdateCourse = async () => {
   }
 };
 
+const handleDeleteCourse = async (id) => {
+  try {
+    const response = await axios.delete(
+      `http://localhost:3000/classes/${id}/delete`
+    );
+
+    if (response.status === 200) {
+      snackbar.value = true;
+      text.value = "Eğitim başarıyla silindi.";
+      await handleGetCourses();
+    }
+  } catch (error) {
+    snackbar.value = true;
+    text.value = "Eğitim silinirken bir hata oluştu.";
+  }
+};
+
 const handleCreateCourse = async () => {
   try {
     const response = await axios.post(`http://localhost:3000/classes/create`, {
       ...newCourse.value,
+      startDate: startDate.value,
+      endDate: endDate.value,
     });
 
-    if (response.status === 200) {
+    if (response.status === 201) {
       await handleGetCourses();
     }
   } catch (error) {

@@ -1,7 +1,7 @@
 <template>
   <div class="p-5">
     <div class="flex items-center justify-between">
-      <h1 class="text-2xl">Yöneticiler (6)</h1>
+      <h1 class="text-2xl">Yöneticiler ({{ admins?.length || 0 }})</h1>
       <v-dialog max-width="500">
         <template v-slot:activator="{ props: activatorProps }">
           <v-btn

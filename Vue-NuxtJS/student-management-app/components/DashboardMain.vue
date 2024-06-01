@@ -6,19 +6,19 @@
         class="bg-red-700 text-white p-10 rounded flex flex-col items-center"
       >
         <span class="cardTitle">Toplam Sınıflar</span>
-        <span class="cardSubtitle">45</span>
+        <span class="cardSubtitle">{{ courses?.length || 0 }}</span>
       </div>
       <div
         class="bg-blue-900 text-white p-10 rounded flex flex-col items-center"
       >
         <span class="cardTitle">Toplam Eğitmenler</span>
-        <span class="cardSubtitle">45</span>
+        <span class="cardSubtitle">{{ instructors?.length || 0 }}</span>
       </div>
       <div
         class="bg-orange-700 text-white p-10 rounded flex flex-col items-center"
       >
         <span class="cardTitle">Toplam Öğrenci</span>
-        <span class="cardSubtitle">380</span>
+        <span class="cardSubtitle">{{ students?.length || 0 }}</span>
       </div>
     </div>
 
@@ -26,28 +26,20 @@
       <h2 class="cardTitle my-5">Son Açılan Sınıflar</h2>
 
       <div class="flex gap-5">
-        <div class="flex flex-col p-5 border bg-gray-100 rounded">
-          <span class="text-xl">Frontend Geliştirme Kursu</span>
-          <span><b>Oluşturulma:</b> 25.05.2024</span>
-          <span>Toplam <b>12 öğrenci</b> kayıtlı</span>
-        </div>
-
-        <div class="flex flex-col p-3 border bg-gray-100 rounded">
-          <span class="text-xl">Frontend Geliştirme Kursu</span>
-          <span>Oluşturulma: 25.05.2024</span>
-          <span>Toplam <b>12 öğrenci</b> kayıtlı</span>
-        </div>
-
-        <div class="flex flex-col p-3 border bg-gray-100 rounded">
-          <span class="text-xl">Frontend Geliştirme Kursu</span>
-          <span>Oluşturulma: 25.05.2024</span>
-          <span>Toplam <b>12 öğrenci</b> kayıtlı</span>
-        </div>
-
-        <div class="flex flex-col p-3 border bg-gray-100 rounded">
-          <span class="text-xl">Frontend Geliştirme Kursu</span>
-          <span>Oluşturulma: 25.05.2024</span>
-          <span>Toplam <b>12 öğrenci</b> kayıtlı</span>
+        <div
+          class="flex flex-col p-5 border bg-gray-100 rounded"
+          v-for="course in courses"
+          :key="course._id"
+        >
+          <span class="text-xl">{{ course?.courseName }}</span>
+          <span
+            ><b>Oluşturulma:</b>
+            {{ moment(course?.startDate).format("DD-MM-YYYY") }}</span
+          >
+          <span
+            >Toplam
+            <b>{{ course?.students?.length || 0 }} öğrenci</b> kayıtlı</span
+          >
         </div>
       </div>
     </div>
@@ -56,28 +48,17 @@
       <h2 class="cardTitle my-5">Son Kayıt Olan Öğrenciler</h2>
 
       <div class="flex gap-5">
-        <div class="flex flex-col p-5 border bg-gray-100 rounded">
-          <span class="text-xl">John Doe</span>
-          <span><b>Kayıt Tarihi:</b> 25.05.2024</span>
-          <span><b>Kurs:</b> Frontend Geliştirme Kursu</span>
-        </div>
-
-        <div class="flex flex-col p-5 border bg-gray-100 rounded">
-          <span class="text-xl">John Doe</span>
-          <span><b>Kayıt Tarihi:</b> 25.05.2024</span>
-          <span><b>Kurs:</b> Frontend Geliştirme Kursu</span>
-        </div>
-
-        <div class="flex flex-col p-5 border bg-gray-100 rounded">
-          <span class="text-xl">John Doe</span>
-          <span><b>Kayıt Tarihi:</b> 25.05.2024</span>
-          <span><b>Kurs:</b> Frontend Geliştirme Kursu</span>
-        </div>
-
-        <div class="flex flex-col p-5 border bg-gray-100 rounded">
-          <span class="text-xl">John Doe</span>
-          <span><b>Kayıt Tarihi:</b> 25.05.2024</span>
-          <span><b>Kurs:</b> Frontend Geliştirme Kursu</span>
+        <div
+          class="flex flex-col p-5 border bg-gray-100 rounded"
+          v-for="student in students"
+          :key="student._id"
+        >
+          <span class="text-xl">{{ student.name }} {{ student.lastName }}</span>
+          <span><b>Telefon Numarası:</b> {{ student?.phoneNumber }}</span>
+          <span
+            >Kayıtlı olduğu
+            <b>{{ student?.courses?.length }} adet kurs mevcut</b></span
+          >
         </div>
       </div>
     </div>
@@ -85,24 +66,34 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
-const statics = ref([
-  {
-    title: "Toplam Sınıflar",
-    count: 45,
-    color: "bg-red-700",
-  },
-  {
-    title: "Toplam Eğitmenler",
-    count: 45,
-    color: "bg-blue-900",
-  },
-  {
-    title: "Toplam Öğrenci",
-    count: 380,
-    color: "bg-orange-700",
-  },
-]);
+import { ref, onMounted } from "vue";
+import axios from "axios";
+import moment from "moment";
+
+const students = ref([]);
+const courses = ref([]);
+const instructors = ref([]);
+
+onMounted(async () => {
+  try {
+    const studentsResponse = await axios.get("http://localhost:3000/students");
+    if (studentsResponse.status === 200) {
+      students.value = studentsResponse.data;
+    }
+    const coursesResponse = await axios.get("http://localhost:3000/classes");
+    if (coursesResponse.status === 200) {
+      courses.value = coursesResponse.data;
+    }
+    const instructorsResponse = await axios.get(
+      "http://localhost:3000/instructors"
+    );
+    if (instructorsResponse.status === 200) {
+      instructors.value = instructorsResponse.data;
+    }
+  } catch (error) {
+    console.log(error);
+  }
+});
 </script>
 
 <style scoped>

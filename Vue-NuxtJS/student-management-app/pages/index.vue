@@ -47,6 +47,7 @@
 <script setup>
 import axios from "axios";
 import { ref } from "vue";
+import Cookies from "js-cookie";
 
 const snackbar = ref(false);
 const text = ref("");
@@ -64,6 +65,11 @@ const loginHandle = async () => {
     if (response.status !== 200) {
       text.value = "Bilgilerinizi kontrol ediniz.";
       snackbar.value = true;
+    } else {
+      text.value = "Giriş başarılı.";
+      snackbar.value = true;
+      Cookies.set("role", response.data.data.role);
+      window.location.href = "/dashboard";
     }
   } catch (err) {
     text.value = "Bilgilerinizi kontrol ediniz.";
